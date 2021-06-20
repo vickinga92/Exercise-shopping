@@ -1,6 +1,6 @@
 <template>
-
-    <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12 text-center">
+<div>
+  <div class="">
       <div class="shop-box">
         <h3>{{ title }}</h3>
         <img :src="img" alt="" class="img" />
@@ -10,7 +10,7 @@
         </button>
       </div>
     </div>
-
+</div>
 </template>
 
 <script>

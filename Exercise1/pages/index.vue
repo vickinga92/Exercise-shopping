@@ -39,7 +39,7 @@ export default {
       fruits: { id: "", title: "", price: "", img: "" },
       listOrder: [],
       total: "",
-
+      offert: ""
     };
   },
   async mounted() {
@@ -49,7 +49,7 @@ export default {
   },
 
   computed: {
-    totalPrice(item) {
+    totalPrice() {
       if (this.listOrder.length === 0) {
         return 0;
       }
@@ -57,15 +57,28 @@ export default {
       total = total.reduce((sum, current) => sum + current);
       return total;
     },
-
   },
   methods: {
 
-    addToCart(item) {
+     addToCart(item) {
+
       let found = this.listOrder.filter((order) => order.id === item.id);
 
       if (found.length != 0) {
         found[0].quantity++;
+
+        if (found[0].id === "1"){
+         let offert = ( Math.trunc(found[0].quantity / 3)) * 130;
+         if (found[0].quantity % 3 === 1) offert = offert + 50;
+         if (found[0].quantity % 3 === 2) offert = offert + 100;
+         found[0].unitPrice =  offert / found[0].quantity;
+        }
+        if (found[0].id === "2"){
+         let offert = ( Math.trunc(found[0].quantity / 2)) * 45;
+         if (found[0].quantity % 2 === 1) offert = offert + 30;
+         if (found[0].quantity % 2 === 2) offert = offert + 95;
+         found[0].unitPrice =  offert / found[0].quantity;
+        }
       }else {
         let order = {
           id: item.id,
@@ -73,10 +86,13 @@ export default {
           unitPrice: item.price,
           quantity: 1,
         };
-        this.listOrder.push(order);
+      this.listOrder.push(order);
       }
+
+      console.log(found)
     },
-    removeItem(item) {
+
+      removeItem() {
       let index = this.listOrder.findIndex((item) => item.id === item.id);
       this.listOrder.splice(index, 1);
     },

@@ -39,7 +39,7 @@ export default {
       fruits: { id: "", title: "", price: "", img: "" },
       listOrder: [],
       total: "",
-      offert: ""
+      offert: "",
     };
   },
   async mounted() {
@@ -53,48 +53,35 @@ export default {
       if (this.listOrder.length === 0) {
         return 0;
       }
-      let total = this.listOrder.map((item) => item.unitPrice * item.quantity);
+      let total = this.listOrder.map((item) => item.unitPrice);
       total = total.reduce((sum, current) => sum + current);
       return total;
     },
   },
   methods: {
-
-     addToCart(item) {
-
+    addToCart(item) {
       let found = this.listOrder.filter((order) => order.id === item.id);
 
       if (found.length != 0) {
         found[0].quantity++;
-
-        if (found[0].id === "1"){
-         let offert = ( Math.trunc(found[0].quantity / 3)) * 130;
-         if (found[0].quantity % 3 === 1) offert = offert + 50;
-         if (found[0].quantity % 3 === 2) offert = offert + 100;
-         found[0].unitPrice =  offert / found[0].quantity;
+        if (found[0].quantity % item.itemCount === 0) {
+          found[0].unitPrice += item.price * item.discount;
+        } else {
+          found[0].unitPrice += item.price;
         }
-        if (found[0].id === "2"){
-         let offert = ( Math.trunc(found[0].quantity / 2)) * 45;
-         if (found[0].quantity % 2 === 1) offert = offert + 30;
-         if (found[0].quantity % 2 === 2) offert = offert + 95;
-         found[0].unitPrice =  offert / found[0].quantity;
-        }
-      }else {
+      } else {
         let order = {
           id: item.id,
           title: item.title,
           unitPrice: item.price,
           quantity: 1,
         };
-      this.listOrder.push(order);
+        this.listOrder.push(order);
       }
-
-      console.log(found)
     },
 
-      removeItem() {
-      let index = this.listOrder.findIndex((item) => item.id === item.id);
-      this.listOrder.splice(index, 1);
+    removeItem(item) {
+      this.listOrder.splice(item, 1);
     },
   },
 

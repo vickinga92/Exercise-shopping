@@ -16,12 +16,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in order" :key="item.id">
+                  <tr v-for="(item, index) in order" :key="item.id">
                     <td>{{item.id}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.quantity}}</td>
-                    <td>{{(item.unitPrice * item.quantity)}}</td>
-                     <td> <button @click="removeItem(item)">X</button> </td>
+                    <td>{{(item.unitPrice)}}</td>
+                     <td> <button @click="removeItem(index)">X</button> </td>
                   </tr>
                 </tbody>
               </table>
